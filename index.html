@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>From Zero — Bengaluru | A Linkin Park Night I Won't Forget</title>
-<link rel="icon" type="image/png" href="logo.png">
-<link rel="shortcut icon" type="image/png" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="shortcut icon" type="image/png" href="images/logo.png">
+<link rel="apple-touch-icon" href="images/logo.png">
 <!-- Circular favicon via canvas — crops logo.png into a circle at runtime -->
 <script>
   (function(){
@@ -671,7 +671,21 @@ footer{
   /* story */
   .story{padding:80px 0 60px;}
   .story-grid{grid-template-columns:1fr; gap:28px;}
-  .story-figure{position:relative; top:0; aspect-ratio:4/3;}
+  .story-figure{
+    position:relative; top:0;
+    aspect-ratio:unset;
+    height:auto;
+    max-height:none;
+    overflow:visible;       /* allow full image height to show */
+  }
+  .story-figure img{
+    position:relative;      /* break out of absolute positioning */
+    width:100%;
+    height:auto;            /* natural height — no cropping at all */
+    max-height:none;
+    object-fit:unset;
+    display:block;
+  }
   .story-copy p{font-size:1rem; line-height:1.7;}
   .story-copy p:first-of-type::first-letter{font-size:3rem; line-height:0.8;}
   .sec-head{margin-bottom:32px;}
@@ -776,7 +790,7 @@ footer{
 
 <nav>
   <div class="nav-mark">
-    <img src="images.jpg" alt="From Zero BLR logo" class="nav-logo">
+    <img src="images/images.jpg" alt="From Zero BLR logo" class="nav-logo">
     FROM ZERO / BLR
   </div>
   <ul class="nav-links">
@@ -811,7 +825,7 @@ footer{
 <!-- ============ HERO ============ -->
 <header class="hero">
   <div class="tiger-mark">
-    <img src="tiger_white.png" alt="" aria-hidden="true" style="width:100%;display:block;">
+    <img src="images/tiger_white.png" alt="" aria-hidden="true" style="width:100%;display:block;">
   </div>
   <div class="hero-glow"></div>
   <div class="hero-body">
@@ -839,7 +853,7 @@ footer{
 <section class="story" id="story">
   <div class="container story-grid">
     <div class="story-figure reveal">
-      <img src="ith.jpg" alt="In the end it really did matter — Brigade Innovation Gardens, Bengaluru 23 Jan 2026">
+      <img src="images/ith.jpg" alt="In the end it really did matter — Brigade Innovation Gardens, Bengaluru 23 Jan 2026">
     </div>
     <div class="story-copy">
       <span class="eyebrow reveal">The Night</span>
@@ -933,25 +947,25 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
     </div>
     <div class="gal-grid">
       <div class="gal-tile reveal">
-        <img src="band_mem.jpg" alt="Band members on stage — Bengaluru">
+        <img src="images/band_mem.jpg" alt="Band members on stage — Bengaluru">
         <span>The band — Brigade Innovation Gardens</span>
         <div class="gal-credit">📷 Photos by @radnomadvisuals / @amigoandco</div>
       </div>
       <div class="gal-tile reveal">
-        <img src="em_mike.jpg" alt="Emily Armstrong and Mike Shinoda">
+        <img src="images/em_mike.jpg" alt="Emily Armstrong and Mike Shinoda">
         <span>Emily & Mike</span>
         <div class="gal-credit">📷 Photos by @radnomadvisuals / @amigoandco</div>
       </div>
       <div class="gal-tile reveal">
-        <img src="crowd.jpg" alt="Crowd at the concert">
+        <img src="images/crowd.jpg" alt="Crowd at the concert">
         <span>40,000 strong — Bengaluru</span>
       </div>
       <div class="gal-tile reveal">
-        <img src="mike_blue.jpg" alt="Mike Shinoda under blue lights">
+        <img src="images/mike_blue.jpg" alt="Mike Shinoda under blue lights">
         <span>Mike — blue hour</span>
       </div>
       <div class="gal-tile reveal">
-        <img src="WID.jpg" alt="Concert stage wide shot">
+        <img src="images/WID.jpg" alt="Concert stage wide shot">
         <span>When it dropped</span>
       </div>
     </div>
@@ -1026,13 +1040,13 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
         <p class="foot-col-head">Quick Links</p>
         <ul class="foot-quicklinks">
           <li>
-            <a href="setlist.png" download="LP_Bengaluru_Setlist.png">
+            <a href="images/setlist.png" download="LP_Bengaluru_Setlist.png">
               <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
               Setlist
             </a>
           </li>
           <li>
-            <a href="poster.png" download="LP_Bengaluru_Poster.png">
+            <a href="images/poster.png" download="LP_Bengaluru_Poster.png">
               <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
               Poster
             </a>
