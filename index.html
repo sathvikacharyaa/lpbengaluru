@@ -55,6 +55,7 @@ document.documentElement.classList.add('fonts-loading');
   if('fonts' in document){
     Promise.all([
       document.fonts.load('400 1em Anton'),
+      document.fonts.load('700 1em Arial'),
       document.fonts.load('400 1em Barlow'),
       document.fonts.load('400 1em JetBrains Mono')
     ]).then(function(){
@@ -109,11 +110,12 @@ body::before{
 }
 
 h1,h2,h3,.display{
-  /* Anton fallback: Impact on Windows, system-ui condensed elsewhere */
-  font-family:'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  /* Neue Helvetica Bold — uses system Helvetica Neue Bold on macOS/iOS,
+     Arial Bold on Windows, Roboto Bold on Android */
+  font-family:'Helvetica Neue', 'Arial', 'Roboto', sans-serif;
   text-transform:uppercase;
   letter-spacing:0.01em;
-  font-weight:400;
+  font-weight:700;
 }
 .eyebrow{
   /* JetBrains Mono fallback: ui-monospace on Apple, Consolas on Windows */
@@ -202,7 +204,8 @@ nav{
 }
 .mobile-drawer ul li a{
   display:block;
-  font-family:'Anton','Impact',sans-serif;
+  font-family:'Helvetica Neue', 'Arial', 'Roboto', sans-serif;
+  font-weight:700;
   font-size:clamp(2.2rem,10vw,3.4rem);
   text-transform:uppercase; letter-spacing:0.04em;
   color:var(--bone); text-decoration:none;
@@ -310,11 +313,12 @@ nav{
 }
 .marquee-track{
   display:inline-flex;
-  animation:scrollLeft 52s linear infinite;
+  animation:scrollLeft 80s linear infinite;
 }
 /* 3-step repeating cycle: orange → black-fill (outline only) → white */
 .marquee-track span{
-  font-family:'Anton', sans-serif;
+  font-family:'Helvetica Neue', 'Arial', 'Roboto', sans-serif;
+  font-weight:700;
   font-size:clamp(1.6rem, 5vw, 3.2rem);
   letter-spacing:0.02em;
   padding:0 2.2rem;
@@ -398,7 +402,7 @@ nav{
   margin-bottom:26px; opacity:0.92;
 }
 .story-copy p:first-of-type::first-letter{
-  font-family:'Anton', sans-serif; font-size:4.2rem; float:left; line-height:0.75;
+  font-family:'Helvetica Neue', 'Arial', 'Roboto', sans-serif; font-weight:700; font-size:4.2rem; float:left; line-height:0.75;
   padding-right:12px; color:var(--ember);
 }
 .story-copy .cite{
@@ -557,6 +561,225 @@ nav{
 .why-lede b{color:var(--ember); font-weight:500; font-style:normal;}
 @media(max-width:760px){/* why-grid handled in main mobile block */}
 
+/* ============ KEEPSAKES ============ */
+.keepsakes{
+  padding:130px 0;
+  background:var(--char);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  position:relative;
+  overflow:hidden;
+}
+.keepsakes::before{
+  content:"";
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 50%, rgba(184,28,34,0.1), transparent 65%);
+  pointer-events:none;
+}
+
+.keepsakes-grid{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  gap:80px;
+  position:relative; z-index:1;
+  flex-wrap:wrap;
+}
+
+/* shared circle container */
+.keepsake-item{
+  display:flex; flex-direction:column; align-items:center; gap:24px;
+  flex:0 0 auto;
+}
+
+/* the frame — same fixed size for both, rectangular with rounded corners */
+.keepsake-circle{
+  --ks-w: 300px;
+  --ks-h: 400px;
+  --ks-radius: 20px;
+  width: var(--ks-w);
+  height: var(--ks-h);
+  border-radius: var(--ks-radius);
+  position:relative;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+
+/* outer dashed border ring — follows the rounded rect */
+.keepsake-circle::before{
+  content:"";
+  position:absolute;
+  inset:-12px;
+  border-radius:calc(var(--ks-radius) + 12px);
+  border:1px dashed rgba(255,90,46,0.28);
+  pointer-events:none;
+}
+/* ember corner accent — top-left only */
+.keepsake-circle::after{
+  content:"";
+  position:absolute;
+  inset:-12px;
+  border-radius:calc(var(--ks-radius) + 12px);
+  border:2px solid transparent;
+  border-top-color: rgba(255,90,46,0.6);
+  border-left-color: rgba(255,90,46,0.6);
+  pointer-events:none;
+}
+
+/* inner media frame */
+.keepsake-media{
+  width:100%; height:100%;
+  border-radius: var(--ks-radius);
+  overflow:hidden;
+  border:1px solid rgba(255,90,46,0.2);
+  box-shadow:
+    0 0 0 1px rgba(255,90,46,0.06),
+    0 8px 50px rgba(0,0,0,0.7),
+    0 0 60px rgba(184,28,34,0.12);
+  position:relative;
+  transition:box-shadow 0.4s ease, border-color 0.4s ease;
+  cursor:pointer;
+}
+.keepsake-media:hover{
+  border-color:rgba(255,90,46,0.5);
+  box-shadow:
+    0 0 0 1px rgba(255,90,46,0.2),
+    0 8px 50px rgba(0,0,0,0.7),
+    0 0 90px rgba(255,90,46,0.2);
+}
+.keepsake-media img,
+.keepsake-media video{
+  width:100%; height:100%;
+  object-fit:cover; display:block;
+}
+
+/* poster hover overlay */
+.keepsake-media .ks-overlay{
+  position:absolute; inset:0;
+  border-radius: var(--ks-radius);
+  background:rgba(0,0,0,0.45);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px;
+  opacity:0;
+  transition:opacity 0.35s ease;
+  backdrop-filter:blur(2px);
+}
+.keepsake-media:hover .ks-overlay{ opacity:1; }
+.ks-overlay-label{
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase;
+  color:var(--bone);
+}
+.ks-overlay-icon{
+  width:40px; height:40px;
+  border-radius:50%;
+  border:1px solid rgba(237,229,218,0.5);
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(11,9,8,0.5);
+}
+.ks-overlay-icon svg{ width:18px; height:18px; fill:var(--bone); }
+
+/* caption + download row */
+.keepsake-caption{
+  text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  max-width:300px;
+}
+.keepsake-caption p{
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:0.66rem; letter-spacing:0.08em; line-height:1.75;
+  color:var(--smoke);
+}
+.keepsake-caption p b{ color:var(--bone); font-weight:500; }
+.keepsake-dl{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--bone); text-decoration:none;
+  border:1px solid rgba(237,229,218,0.22);
+  padding:8px 16px;
+  background:rgba(11,9,8,0.4);
+  backdrop-filter:blur(6px);
+  transition:background 0.3s, border-color 0.3s, color 0.3s;
+}
+.keepsake-dl:hover{
+  background:var(--ember);
+  border-color:var(--ember);
+  color:#fff;
+}
+.keepsake-dl svg{ width:13px; height:13px; fill:currentColor; flex-shrink:0; }
+
+/* magnet orbit animation */
+.magnet-orbit-wrap{
+  width:100%; height:100%;
+  position:absolute; inset:0;
+  animation:magnetOrbit 7s ease-in-out infinite;
+}
+@keyframes magnetOrbit{
+  0%   { transform: rotate(0deg)   translateX(8px) rotate(0deg);   }
+  25%  { transform: rotate(90deg)  translateX(8px) rotate(-90deg); }
+  50%  { transform: rotate(180deg) translateX(8px) rotate(-180deg);}
+  75%  { transform: rotate(270deg) translateX(8px) rotate(-270deg);}
+  100% { transform: rotate(360deg) translateX(8px) rotate(-360deg);}
+}
+
+/* credit link */
+.magnet-credit{
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--smoke); text-decoration:none;
+  border-bottom:1px solid rgba(143,131,120,0.3);
+  padding-bottom:2px;
+  transition:color 0.25s, border-color 0.25s;
+}
+.magnet-credit:hover{ color:var(--ember); border-bottom-color:var(--ember); }
+.magnet-credit svg{ width:12px; height:12px; fill:currentColor; opacity:0.7; }
+
+/* ---- lightbox ---- */
+.ks-lightbox{
+  display:none;
+  position:fixed; inset:0; z-index:900;
+  background:rgba(0,0,0,0.92);
+  backdrop-filter:blur(10px);
+  align-items:center; justify-content:center;
+  padding:20px;
+}
+.ks-lightbox.open{ display:flex; }
+.ks-lightbox img{
+  max-width:min(600px, 90vw);
+  max-height:90svh;
+  object-fit:contain;
+  border:1px solid var(--line);
+  box-shadow:0 0 80px rgba(0,0,0,0.8);
+}
+.ks-lightbox-close{
+  position:absolute; top:20px; right:20px;
+  width:44px; height:44px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(237,229,218,0.06);
+  border:1px solid rgba(237,229,218,0.15);
+  border-radius:50%; cursor:pointer;
+  transition:background 0.25s, border-color 0.25s, transform 0.25s;
+}
+.ks-lightbox-close:hover{
+  background:rgba(237,229,218,0.14);
+  border-color:rgba(237,229,218,0.45);
+  transform:rotate(90deg);
+}
+.ks-lightbox-close svg{
+  width:18px; height:18px;
+  stroke:var(--bone); stroke-width:2;
+  fill:none; stroke-linecap:round;
+}
+
+/* mobile */
+@media(max-width:760px){
+  .keepsakes{ padding:70px 0; }
+  .keepsakes-grid{ gap:52px; }
+  .keepsake-circle{ --ks-w: min(260px, 80vw); --ks-h: calc(min(260px, 80vw) * 1.33); }
+}
+
 /* ============ FOOTER ============ */
 footer{
   padding:90px 0 40px; border-top:1px solid var(--line);
@@ -574,6 +797,8 @@ footer{
   line-height:1.2;
   color:var(--bone);
   letter-spacing:0.01em;
+  font-family:'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  font-weight:400;
 }
 .foot-quote p{
   margin-top:16px;
@@ -594,6 +819,27 @@ footer{
   text-transform:uppercase; color:var(--ember);
   margin-bottom:20px;
 }
+/* attribution line above quick links */
+.foot-attribution{
+  font-family:'JetBrains Mono','Courier New',monospace;
+  font-size:0.68rem; letter-spacing:0.06em; line-height:1.7;
+  color:var(--smoke);
+  border-left:2px solid var(--ember);
+  padding:10px 0 10px 14px;
+  margin-bottom:40px;
+  max-width:640px;
+}
+.foot-attribution a{
+  color:var(--ember);
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,90,46,0.35);
+  transition:border-color 0.25s, color 0.25s;
+}
+.foot-attribution a:hover{
+  color:var(--bone);
+  border-bottom-color:var(--bone);
+}
+
 /* quick links */
 .foot-quicklinks{list-style:none; display:flex; flex-direction:column; gap:10px;}
 .foot-quicklinks a{
@@ -1023,6 +1269,73 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
   </div>
 </section>
 
+<!-- ============ KEEPSAKES ============ -->
+<section class="keepsakes" id="keepsakes">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Take It Home</span>
+      <h2>Keepsakes</h2>
+      <p>A night this good deserves something to hold on to.</p>
+    </div>
+
+    <div class="keepsakes-grid">
+
+      <!-- LEFT — Poster -->
+      <div class="keepsake-item reveal">
+        <div class="keepsake-circle">
+          <div class="keepsake-media" onclick="openPosterLightbox()" role="button" tabindex="0" aria-label="View full concert poster">
+            <img src="images/poster.png" alt="Linkin Park From Zero — Bengaluru 2026 concert poster">
+            <div class="ks-overlay">
+              <div class="ks-overlay-icon">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              </div>
+              <span class="ks-overlay-label">View Poster</span>
+            </div>
+          </div>
+        </div>
+        <div class="keepsake-caption">
+          <p><b>Concert Poster</b> — From Zero World Tour · Bengaluru, 23 Jan 2026.</p>
+          <a class="keepsake-dl" href="images/poster.png" download="LP_Bengaluru_Poster.png">
+            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
+            Download
+          </a>
+        </div>
+      </div>
+
+      <!-- RIGHT — Magnet -->
+      <div class="keepsake-item reveal">
+        <div class="keepsake-circle">
+          <div class="keepsake-media" style="cursor:default;">
+            <div class="magnet-orbit-wrap">
+              <video autoplay loop muted playsinline
+                src="images/magnet.mp4"
+                aria-label="Linkin Park fridge magnet souvenir by slicestack3d"
+                style="width:100%;height:100%;object-fit:cover;display:block;">
+              </video>
+            </div>
+          </div>
+        </div>
+        <div class="keepsake-caption">
+          <p>A special <b>fridge magnet</b>, handmade by a friend, that lets you hold on to the memory of that amazing night.</p>
+          <a class="magnet-credit" href="https://www.instagram.com/slicestack3d/" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            @slicestack3d
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Poster lightbox -->
+<div class="ks-lightbox" id="posterLightbox" role="dialog" aria-modal="true" aria-label="Concert poster full view">
+  <button class="ks-lightbox-close" onclick="closePosterLightbox()" aria-label="Close">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <img src="images/poster.png" alt="Linkin Park From Zero — Bengaluru 2026 concert poster full size">
+</div>
+
 <footer>
   <div class="container">
 
@@ -1031,6 +1344,11 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
       <h2>"THE ONE THING THAT CAN'T BE DEFEATED IS LOVE"</h2>
       <p>— Chester Bennington</p>
     </div>
+
+    <!-- Attribution -->
+    <p class="foot-attribution">
+      Built with inspiration from <a href="https://www.lpsetlists.com" target="_blank" rel="noopener noreferrer">lpsetlists.com</a>
+    </p>
 
     <!-- 3-col row -->
     <div class="foot-cols">
@@ -1069,10 +1387,7 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
           <a href="https://www.twitter.com/sathvikacharyaa" target="_blank" rel="noopener" aria-label="X / Twitter">
             <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.031 2.25H8.12l4.265 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
-          <!-- Website -->
-          <a href="https://sathvikacharyaa.vercel.app/" target="_blank" rel="noopener" aria-label="Website">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-          </a>
+         
         </div>
       </div>
 
@@ -1122,8 +1437,27 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
   });
   /* close on Escape */
   document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') closeDrawer();
+    if(e.key === 'Escape'){ closeDrawer(); closePosterLightbox(); }
   });
+
+  /* Poster lightbox */
+  const posterLightbox = document.getElementById('posterLightbox');
+  function openPosterLightbox(){
+    posterLightbox.classList.add('open');
+    document.body.classList.add('menu-open');
+  }
+  function closePosterLightbox(){
+    posterLightbox.classList.remove('open');
+    document.body.classList.remove('menu-open');
+  }
+  posterLightbox.addEventListener('click', function(e){
+    if(e.target === posterLightbox) closePosterLightbox();
+  });
+  /* keyboard trigger on the circle */
+  document.querySelector('.keepsake-media[role="button"]')
+    .addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openPosterLightbox(); }
+    });
 </script>
 
 </body>
