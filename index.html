@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>From Zero — Bengaluru | A Linkin Park Night I Won't Forget</title>
+<title>From Zero Bengaluru | A Linkin Park Night I Won't Forget</title>
 
 <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
 <meta property="og:type" content="website">
@@ -12,10 +12,12 @@
 <meta property="og:description" content="Linkin Park live at Brigade Innovation Gardens, Bengaluru · 23 Jan 2026. The From Zero World Tour finally roared into India.">
 <meta property="og:image" content="https://linkinparkbengaluru.vercel.app/images/preview.png">
 <meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:height" content="628">
+<meta property="og:image:alt" content="Linkin Park From Zero World Tour — Bengaluru 2026">
 
 <!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@sathvikacharyaa">
 <meta name="twitter:url" content="https://linkinparkbengaluru.vercel.app/">
 <meta name="twitter:title" content="From Zero — Bengaluru | A Linkin Park Night I Won't Forget">
 <meta name="twitter:description" content="Linkin Park live at Brigade Innovation Gardens, Bengaluru · 23 Jan 2026. The From Zero World Tour finally roared into India.">
@@ -827,11 +829,64 @@ nav{
   fill:none; stroke-linecap:round;
 }
 
+/* wallpapers row */
+.wallpapers-row{
+  margin-top:70px;
+  padding-top:56px;
+  border-top:1px solid var(--line);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:flex-start;
+  gap:50px;
+  position:relative; z-index:1;
+}
+.wallpapers-row .wallpapers-heading{
+  width:100%;
+  text-align:center;
+}
+.wallpapers-row .wallpapers-heading .eyebrow{ margin-bottom:8px; display:block; }
+.wallpapers-row .wallpapers-heading h3{
+  font-size:clamp(1.4rem,3vw,2rem);
+  margin-bottom:6px;
+}
+.wallpapers-row .wallpapers-heading p{
+  color:var(--smoke); font-size:0.9rem; font-weight:300;
+}
+/* PC frame — landscape 16:9 */
+.keepsake-circle.pc-frame{
+  --ks-w: 480px;
+  --ks-h: 270px;
+  --ks-radius: 16px;
+}
+/* Phone frame — portrait 9:19.5 */
+.keepsake-circle.phone-frame{
+  --ks-w: 160px;
+  --ks-h: 346px;
+  --ks-radius: 20px;
+}
+.phone-frames-group{
+  display:flex;
+  align-items:flex-start;
+  gap:24px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.phone-frame-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+}
+
 /* mobile */
 @media(max-width:760px){
   .keepsakes{ padding:70px 0; }
   .keepsakes-grid{ gap:52px; }
   .keepsake-circle{ --ks-w: min(260px, 80vw); --ks-h: calc(min(260px, 80vw) * 1.33); }
+  .wallpapers-row{ gap:32px; }
+  .keepsake-circle.pc-frame{ --ks-w: min(300px, 90vw); --ks-h: calc(min(300px, 90vw) * 0.6); }
+  .keepsake-circle.phone-frame{ --ks-w: min(140px, 38vw); --ks-h: calc(min(140px, 38vw) * 2.16); }
 }
 
 /* ============ FOOTER ============ */
@@ -1297,7 +1352,7 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
       <h2>Memories That Stay With Me</h2>
     </div>
     <div class="mem-wall">
-      <div class="mem-card reveal"><span class="mtime">7:50 PM</span><p>The line moved and someone's playlist started leaking out of a speaker — Papercuts. Half the queue started singing before we'd even gotten through security.</p></div>
+      <div class="mem-card reveal"><span class="mtime">7:50 PM</span><p>When Somewhere I Belong started, the whole crowd got emotional because it felt like a dream come true.</p></div>
       <div class="mem-card reveal"><span class="mtime">8:06 PM</span><p>Up From the Bottom was the new song and everyone was singing along. The crowd loved it, especially when they waited for the Mike's solo.</p></div>
       <div class="mem-card reveal"><span class="mtime">8:08 PM</span><p>New Divide's intro gave everyone goosebumps, and the scene matched the song perfectly.</p></div>
       <div class="mem-card reveal"><span class="mtime">8:18 PM</span><p>When the Catalyst intro began, there was a quiet pause as we all waited to sing 'Lift me up, Let me go'.</p></div>
@@ -1395,7 +1450,110 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
         </div>
       </div>
 
-    </div>
+    </div><!-- end keepsakes-grid -->
+
+    <!-- Wallpapers -->
+    <div class="wallpapers-row reveal">
+
+      <div class="wallpapers-heading">
+        <span class="eyebrow">Free Wallpapers</span>
+        <h3>Take the night everywhere</h3>
+        <p>Made for your screens. Download and keep the feeling alive.</p>
+      </div>
+
+      <!-- PC Wallpaper -->
+      <div class="keepsake-item">
+        <div class="keepsake-circle pc-frame">
+          <div class="keepsake-media" onclick="openWallLightbox('images/wall_PC.png')" role="button" tabindex="0" aria-label="View PC wallpaper">
+            <img src="images/wall_PC.png" alt="Linkin Park Bengaluru 2026 PC wallpaper">
+            <div class="ks-overlay">
+              <div class="ks-overlay-icon">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              </div>
+              <span class="ks-overlay-label">View</span>
+            </div>
+          </div>
+        </div>
+        <div class="keepsake-caption">
+          <p><b>Desktop Wallpaper</b></p>
+          <a class="keepsake-dl" href="images/wall_PC.png" download="LP_Bengaluru_Wallpaper_PC.png">
+            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
+            Download
+          </a>
+        </div>
+      </div>
+
+      <!-- Poster PC Wallpaper -->
+      <div class="keepsake-item">
+        <div class="keepsake-circle pc-frame">
+          <div class="keepsake-media" onclick="openWallLightbox('images/conwall.png')" role="button" tabindex="0" aria-label="View poster PC wallpaper">
+            <img src="images/conwall.png" alt="Linkin Park Bengaluru 2026 poster PC wallpaper">
+            <div class="ks-overlay">
+              <div class="ks-overlay-icon">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              </div>
+              <span class="ks-overlay-label">View</span>
+            </div>
+          </div>
+        </div>
+        <div class="keepsake-caption">
+          <p><b>Poster Wallpaper</b> — for your PC</p>
+          <a class="keepsake-dl" href="images/conwal.png" download="LP_Bengaluru_Poster_Wallpaper_PC.png">
+            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
+            Download
+          </a>
+        </div>
+      </div>
+
+      <!-- Phone Wallpapers -->
+      <div class="phone-frames-group">
+
+        <div class="phone-frame-wrap">
+          <div class="keepsake-circle phone-frame">
+            <div class="keepsake-media" onclick="openWallLightbox('images/wall_phone.png')" role="button" tabindex="0" aria-label="View phone wallpaper 1">
+              <img src="images/wall_phone.png" alt="Linkin Park Bengaluru 2026 phone wallpaper 1">
+              <div class="ks-overlay">
+                <div class="ks-overlay-icon">
+                  <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                </div>
+                <span class="ks-overlay-label">View</span>
+              </div>
+            </div>
+          </div>
+          <div class="keepsake-caption">
+            <p><b>Phone Wallpaper 1</b></p>
+            <a class="keepsake-dl" href="images/wall_phone.png" download="LP_Bengaluru_Wallpaper_Phone1.png">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
+              Download
+            </a>
+          </div>
+        </div>
+
+        <div class="phone-frame-wrap">
+          <div class="keepsake-circle phone-frame">
+            <div class="keepsake-media" onclick="openWallLightbox('images/ph2.png')" role="button" tabindex="0" aria-label="View phone wallpaper 2">
+              <img src="images/ph2.png" alt="Linkin Park Bengaluru 2026 phone wallpaper 2">
+              <div class="ks-overlay">
+                <div class="ks-overlay-icon">
+                  <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                </div>
+                <span class="ks-overlay-label">View</span>
+              </div>
+            </div>
+          </div>
+          <div class="keepsake-caption">
+            <p><b>Phone Wallpaper 2</b></p>
+            <a class="keepsake-dl" href="images/ph2.png" download="LP_Bengaluru_Wallpaper_Phone2.png">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
+              Download
+            </a>
+          </div>
+        </div>
+
+      </div><!-- end phone-frames-group -->
+
+    </div><!-- end wallpapers-row -->
+
   </div>
 </section>
 
@@ -1405,6 +1563,14 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
     <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </button>
   <img src="images/poster.png" alt="Linkin Park From Zero — Bengaluru 2026 concert poster full size">
+</div>
+
+<!-- Wallpaper lightbox -->
+<div class="ks-lightbox" id="wallLightbox" role="dialog" aria-modal="true" aria-label="Wallpaper full view">
+  <button class="ks-lightbox-close" onclick="closeWallLightbox()" aria-label="Close">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <img id="wallLightboxImg" src="" alt="Wallpaper full size">
 </div>
 
 <footer>
@@ -1431,7 +1597,7 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
           <li>
             <a href="images/setlist.png" download="LP_Bengaluru_Setlist.png">
               <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
-              Setlist
+              Setlist Copy
             </a>
           </li>
           <li>
@@ -1508,7 +1674,7 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
   });
   /* close on Escape */
   document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape'){ closeDrawer(); closePosterLightbox(); }
+    if(e.key === 'Escape'){ closeDrawer(); closePosterLightbox(); closeWallLightbox(); }
   });
 
   /* Poster lightbox */
@@ -1529,6 +1695,22 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
     .addEventListener('keydown', function(e){
       if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openPosterLightbox(); }
     });
+
+  /* Wallpaper lightbox */
+  const wallLightbox = document.getElementById('wallLightbox');
+  const wallLightboxImg = document.getElementById('wallLightboxImg');
+  function openWallLightbox(src){
+    wallLightboxImg.src = src;
+    wallLightbox.classList.add('open');
+    document.body.classList.add('menu-open');
+  }
+  function closeWallLightbox(){
+    wallLightbox.classList.remove('open');
+    document.body.classList.remove('menu-open');
+  }
+  wallLightbox.addEventListener('click', function(e){
+    if(e.target === wallLightbox) closeWallLightbox();
+  });
 </script>
 
 </body>
