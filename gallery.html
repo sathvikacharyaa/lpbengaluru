@@ -102,18 +102,47 @@ body::before{
 }
 .media-tile:hover{border-color:rgba(255,90,46,0.4);}
 
-/* media fills width, height = natural aspect ratio */
-.media-tile img,
-.media-tile video{
-  width:100%;
-  height:auto;              /* natural height — portrait stays tall, landscape stays wide */
+/* static poster shown by default */
+.media-tile .tile-poster{
+  width:100%; height:auto;
+  display:block;
+  max-height:70vh;
+  object-fit:cover;
+  transition:transform 0.6s ease;
+  background:var(--char-2);
+  pointer-events:none;
+}
+.media-tile:hover .tile-poster{ transform:scale(1.03); }
+
+/* media fills width for photos */
+.media-tile img:not(.tile-poster){
+  width:100%; height:auto;
   display:block;
   transition:transform 0.6s ease;
-  max-height:70vh;          /* cap very tall portrait clips */
+  max-height:70vh;
   object-fit:cover;
 }
-.media-tile:hover img,
-.media-tile:hover video{transform:scale(1.03);}
+.media-tile:hover img:not(.tile-poster){ transform:scale(1.03); }
+
+/* play button overlay on video tiles */
+.tile-play-btn{
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:52px; height:52px;
+  border-radius:50%;
+  background:rgba(11,9,8,0.65);
+  border:1.5px solid rgba(237,229,218,0.5);
+  display:flex; align-items:center; justify-content:center;
+  pointer-events:none;
+  transition:background 0.3s, border-color 0.3s, transform 0.3s;
+  z-index:3;
+}
+.media-tile:hover .tile-play-btn{
+  background:rgba(255,90,46,0.85);
+  border-color:var(--ember);
+  transform:translate(-50%,-50%) scale(1.1);
+}
+.tile-play-btn svg{ width:20px; height:20px; fill:#fff; margin-left:3px; }
 
 /* info bar below media */
 .media-tile-info{
@@ -244,7 +273,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/sib.mp4','Somewhere I Belong')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/sib.mp4"></video>
+        <video class="tile-poster" src="images/sib.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">Somewhere I Belong</span>
           <span class="media-tile-desc">Everyone was just singing the lyrics, this was the first song of the night.</span>
@@ -253,7 +282,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/iteb.mp4','In The End — Before the show')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/iteb.mp4"></video>
+        <video class="tile-poster" src="images/iteb.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">In The End</span>
           <span class="media-tile-desc">We sang In The End before the show even began.</span>
@@ -262,7 +291,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/numb.mp4','Numb — tribute to Chester')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/numb.mp4"></video>
+        <video class="tile-poster" src="images/numb.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">Numb</span>
           <span class="media-tile-desc">I paid my tribute to Chester with this one.</span>
@@ -271,7 +300,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/osc.mp4','One Step Closer — that intro')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/osc.mp4"></video>
+        <video class="tile-poster" src="images/osc.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">One Step Closer</span>
           <span class="media-tile-desc">This intro was just different. Pure chills.</span>
@@ -280,7 +309,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/upftb.mp4','Up From The Bottom')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/upftb.mp4"></video>
+        <video class="tile-poster" src="images/upftb.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">Up From The Bottom</span>
           <span class="media-tile-desc">The FROM ZERO song, live for one of the first times ever.</span>
@@ -293,7 +322,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/hitc.mp4','Heavy Is The Crown')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/hitc.mp4"></video>
+        <video class="tile-poster" src="images/hitc.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">Heavy Is The Crown</span>
           <span class="media-tile-desc">This is what we asked for</span>
@@ -306,7 +335,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/newdivide.mp4','New Divide')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/newdivide.mp4"></video>
+        <video class="tile-poster" src="images/newdivide.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">New Divide</span>
           <span class="media-tile-desc">Those opening chords hit the whole crowd at once.</span>
@@ -320,7 +349,7 @@ body::before{
       <!-- Manas's captures -->
       <div class="media-tile" onclick="openLB('video','images/alex.mp4','Alex Riffs — Bleed It Out')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/alex.mp4"></video>
+        <video class="tile-poster" src="images/alex.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">Alex — Bleed It Out</span>
           <span class="media-tile-desc">Alex riffs during Bleed It Out.</span>
@@ -330,7 +359,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/bleeditout_mike.mp4','Mike Rapping — Bleed It Out')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/bleeditout_mike.mp4"></video>
+        <video class="tile-poster" src="images/bleeditout_mike.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">Mike — Bleed It Out</span>
           <span class="media-tile-desc">Mike's rapping at the last. Nobody wanted it to end.</span>
@@ -340,7 +369,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/overflow.mp4','Overflow')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/overflow.mp4"></video>
+        <video class="tile-poster" src="images/overflow.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">Overflow</span>
           <span class="media-tile-desc">To Overflow.</span>
@@ -350,7 +379,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/numb2.mp4','Numb — Always Has Our Hearts')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/numb2.mp4"></video>
+        <video class="tile-poster" src="images/numb2.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">Numb</span>
           <span class="media-tile-desc">Numb always has our hearts.</span>
@@ -360,7 +389,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/mike_verse.mp4','Mike\'s Verse — In The End')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/mike_verse.mp4"></video>
+        <video class="tile-poster" src="images/mike_verse.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">Mike's Verse — In The End</span>
           <span class="media-tile-desc">Mike's verse during In The End. Every single word.</span>
@@ -370,7 +399,7 @@ body::before{
 
       <div class="media-tile" onclick="openLB('video','images/ending.mp4','Heavy Is The Crown — Ending')">
         <div class="media-tile-badge"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</div>
-        <video autoplay loop muted playsinline src="images/ending.mp4"></video>
+        <video class="tile-poster" src="images/ending.mp4#t=0.001" preload="metadata" muted playsinline disablepictureinpicture></video><div class="tile-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="media-tile-info">
           <span class="media-tile-label">Heavy Is The Crown — Ending</span>
           <span class="media-tile-desc">Heavy is the, Heavy is the Crown</span>
@@ -464,9 +493,19 @@ body::before{
     lbInner.innerHTML = '';
     if(type === 'video'){
       const v = document.createElement('video');
-      v.src = src; v.controls = true; v.autoplay = true;
+      v.controls = true;
+      v.autoplay = true;
+      v.preload = 'auto';   // buffer aggressively once user asks for it
+      v.playsInline = true;
       v.style.cssText = 'max-width:100%;max-height:88svh;display:block;';
+      // Add source element — cleaner than src attr for streaming
+      const s = document.createElement('source');
+      s.src = src;
+      s.type = 'video/mp4';
+      v.appendChild(s);
       lbInner.appendChild(v);
+      v.load();
+      v.play().catch(()=>{});
     } else {
       const img = document.createElement('img');
       img.src = src; img.alt = caption;
@@ -478,6 +517,9 @@ body::before{
   }
 
   function closeLB(){
+    // Stop and unload video to free bandwidth immediately
+    const v = lbInner.querySelector('video');
+    if(v){ v.pause(); v.src = ''; v.load(); }
     lb.classList.remove('open');
     lbInner.innerHTML = '';
     document.body.style.overflow = '';
@@ -485,6 +527,13 @@ body::before{
 
   lb.addEventListener('click', e => { if(e.target === lb) closeLB(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLB(); });
+
+  /* Force first-frame thumbnail on all tile videos */
+  document.querySelectorAll('.media-tile video.tile-poster').forEach(v => {
+    v.addEventListener('loadedmetadata', () => { v.currentTime = 0.001; });
+    /* If metadata already loaded (cached), seek immediately */
+    if (v.readyState >= 1) v.currentTime = 0.001;
+  });
 </script>
 </body>
 </html>
