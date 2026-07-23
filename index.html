@@ -1070,6 +1070,139 @@ footer{
   /* footer handled in main mobile block below */
 }
 
+/* ============ NOW PLAYING ============ */
+.np-wrap{
+  margin-top:40px;
+  padding-top:36px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:center;
+}
+.np-card{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  max-width:420px;
+  background:rgba(22,18,16,0.9);
+  border:1px solid rgba(237,229,218,0.1);
+  border-radius:8px;
+  padding:16px 20px;
+  box-shadow:0 4px 32px rgba(0,0,0,0.5);
+  position:relative;
+  transition:border-color 0.5s;
+}
+.np-card.active{ border-color:rgba(255,90,46,0.35); }
+
+/* --- album art --- */
+.np-art-wrap{
+  flex-shrink:0;
+  width:80px; height:80px;
+  position:relative;
+  border-radius:6px;
+  background:var(--char-2);
+  border:1px solid rgba(237,229,218,0.08);
+  overflow:hidden;
+}
+/* LP letter placeholder — shown via ::before until real art loads */
+.np-art-wrap::before{
+  content:"LP";
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Anton','Impact',sans-serif;
+  font-size:1.6rem; color:var(--ember);
+  letter-spacing:0.05em;
+  z-index:0;
+}
+.np-art{
+  width:80px; height:80px;
+  border-radius:6px;
+  object-fit:cover;
+  display:block;
+  position:relative; z-index:1;
+  box-shadow:0 4px 24px rgba(0,0,0,0.6);
+  transition:border-radius 0.5s ease, box-shadow 0.5s ease;
+  /* hide broken-image icon when src is empty */
+  color:transparent;
+}
+/* spinning ring — visible when active */
+.np-ring{
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+  border:2px solid transparent;
+  border-top-color:var(--ember);
+  border-right-color:rgba(255,90,46,0.25);
+  animation:npSpin 2.4s linear infinite;
+  opacity:0;
+  transition:opacity 0.5s;
+  z-index:0;
+}
+.np-card.active .np-ring{ opacity:1; }
+.np-card.active .np-art{
+  border-radius:50%;
+  box-shadow:0 0 0 3px rgba(255,90,46,0.2), 0 4px 24px rgba(0,0,0,0.6);
+}
+@keyframes npSpin{ to{ transform:rotate(360deg); } }
+
+/* --- text --- */
+.np-text{
+  flex:1; min-width:0;
+  display:flex; flex-direction:column; gap:3px;
+}
+.np-status{
+  display:flex; align-items:center; gap:8px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.6rem; letter-spacing:0.24em; text-transform:uppercase;
+  color:var(--ember); margin-bottom:4px;
+}
+/* animated sound bars */
+.np-bars{
+  display:inline-flex; align-items:flex-end; gap:2px;
+  height:12px;
+}
+.np-bars span{
+  display:block;
+  width:3px;
+  background:var(--ember);
+  border-radius:1px;
+  animation:npBar 0.9s ease-in-out infinite alternate;
+}
+.np-bars span:nth-child(1){ height:40%;  animation-delay:0s;    }
+.np-bars span:nth-child(2){ height:100%; animation-delay:0.2s;  }
+.np-bars span:nth-child(3){ height:65%;  animation-delay:0.1s;  }
+.np-bars span:nth-child(4){ height:80%;  animation-delay:0.35s; }
+@keyframes npBar{
+  from{ transform:scaleY(0.3); }
+  to{   transform:scaleY(1);   }
+}
+.np-song{
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:1.25rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.03em;
+  color:var(--bone); line-height:1.15;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.np-artist{
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--smoke);
+}
+.np-album{
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.6rem; letter-spacing:0.08em;
+  color:rgba(143,131,120,0.6);
+  margin-top:2px;
+}
+
+/* mobile */
+@media(max-width:480px){
+  .np-card{ gap:14px; padding:14px 16px; }
+  .np-art-wrap{ width:56px; height:56px; }
+  .np-art{ width:56px; height:56px; }
+  .np-art-wrap::before{ font-size:1.1rem; }
+  .np-song{ font-size:0.95rem; }
+}
+
 /* reveal animation */
 .reveal{opacity:0; transform:translateY(28px); transition:opacity 0.9s ease, transform 0.9s ease;}
 .reveal.in{opacity:1; transform:translateY(0);}
@@ -1767,6 +1900,26 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
         </div>
       </div>
 
+    </div><!-- end foot-cols -->
+
+    <!-- NOW PLAYING — below quick links -->
+    <div class="np-wrap">
+      <div class="np-card" id="npCard">
+        <div class="np-art-wrap">
+          <img class="np-art" id="npArt" src="" alt="">
+          <div class="np-ring"></div>
+        </div>
+        <div class="np-text">
+          <span class="np-status">
+            <span class="np-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+            Now Playing
+          </span>
+          <p class="np-song" id="npSong">—</p>
+          <p class="np-artist">Linkin Park</p>
+          <p class="np-album" id="npAlbum"></p>
+        </div>
+        <div id="ytPlayer" style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;"></div>
+      </div>
     </div>
 
     <div class="foot-bottom" style="margin-top:56px;">
@@ -1850,6 +2003,119 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
   wallLightbox.addEventListener('click', function(e){
     if(e.target === wallLightbox) closeWallLightbox();
   });
+
+  /* ============ NOW PLAYING ============
+     Random LP song each load. Album art fetched live from iTunes Search API
+     — no hotlink blocks, always the real cover art.
+  ================================================ */
+  (function(){
+
+    var SONGS = [
+      /* Hybrid Theory */
+      { title:'Papercut',               album:'Hybrid Theory',       ytId:'vjVkXlxsO8Q', iTunesQ:'Papercut Linkin Park Hybrid Theory' },
+      { title:'One Step Closer',        album:'Hybrid Theory',       ytId:'4qlCC1GOwFw', iTunesQ:'One Step Closer Linkin Park' },
+      { title:'Crawling',               album:'Hybrid Theory',       ytId:'Gd9OhYroLN0', iTunesQ:'Crawling Linkin Park' },
+      { title:'In The End',             album:'Hybrid Theory',       ytId:'eVTXPUF4Oz4', iTunesQ:'In The End Linkin Park' },
+      /* Meteora */
+      { title:'Somewhere I Belong',     album:'Meteora',             ytId:'zsCD5XCu6CM', iTunesQ:'Somewhere I Belong Linkin Park Meteora' },
+      { title:'Faint',                  album:'Meteora',             ytId:'LYU-8IFcDPw', iTunesQ:'Faint Linkin Park Meteora' },
+      { title:'Numb',                   album:'Meteora',             ytId:'kXYiU_JCYtU', iTunesQ:'Numb Linkin Park Meteora' },
+      { title:'Breaking The Habit',     album:'Meteora',             ytId:'v2H4l9RpkwM', iTunesQ:'Breaking The Habit Linkin Park' },
+      { title:'Lying From You',         album:'Meteora',             ytId:'0xyxtzD54rM', iTunesQ:'Lying From You Linkin Park' },
+      /* Minutes to Midnight */
+      { title:"What I've Done",         album:'Minutes to Midnight', ytId:'8sgycukafqQ', iTunesQ:"What I've Done Linkin Park" },
+      { title:'Bleed It Out',           album:'Minutes to Midnight', ytId:'RbBsJkJGSHo', iTunesQ:'Bleed It Out Linkin Park' },
+      { title:'Given Up',               album:'Minutes to Midnight', ytId:'0aMObhOPpFI', iTunesQ:'Given Up Linkin Park' },
+      { title:'Shadow Of The Day',      album:'Minutes to Midnight', ytId:'j1lIMRCM51k', iTunesQ:'Shadow Of The Day Linkin Park' },
+      { title:'Leave Out All The Rest', album:'Minutes to Midnight', ytId:'YcAufuCskSY', iTunesQ:'Leave Out All The Rest Linkin Park' },
+      /* A Thousand Suns */
+      { title:'The Catalyst',           album:'A Thousand Suns',     ytId:'jSPpbOGnFgk', iTunesQ:'The Catalyst Linkin Park' },
+      { title:'Waiting For The End',    album:'A Thousand Suns',     ytId:'wZBm3x90GJY', iTunesQ:'Waiting For The End Linkin Park' },
+      { title:'Iridescent',             album:'A Thousand Suns',     ytId:'PrOFWDPE1rY', iTunesQ:'Iridescent Linkin Park' },
+      /* Living Things */
+      { title:'Burn It Down',           album:'Living Things',       ytId:'9XaS93WMRQQ', iTunesQ:'Burn It Down Linkin Park' },
+      { title:'Castle Of Glass',        album:'Living Things',       ytId:'PEKkdIT8JPM', iTunesQ:'Castle Of Glass Linkin Park' },
+      { title:'Roads Untraveled',       album:'Living Things',       ytId:'uG4cftXQbBU', iTunesQ:'Roads Untraveled Linkin Park' },
+      /* One More Light */
+      { title:'Heavy',                  album:'One More Light',      ytId:'MRbLzwF8PaE', iTunesQ:'Heavy Linkin Park' },
+      { title:'Battle Symphony',        album:'One More Light',      ytId:'6Lio6vDGHRk', iTunesQ:'Battle Symphony Linkin Park' },
+      /* From Zero */
+      { title:'The Emptiness Machine',  album:'From Zero',           ytId:'W-bHiPAGxdQ', iTunesQ:'The Emptiness Machine Linkin Park' },
+      { title:'Lost',                   album:'From Zero',           ytId:'fPMPzV6HOYQ', iTunesQ:'Lost Linkin Park From Zero' },
+      /* Singles */
+      { title:'New Divide',             album:'Transformers OST',    ytId:'KoF53MBUHSs', iTunesQ:'New Divide Linkin Park' },
+    ];
+
+    var pick    = SONGS[Math.floor(Math.random() * SONGS.length)];
+    var card    = document.getElementById('npCard');
+    var artEl   = document.getElementById('npArt');
+    var songEl  = document.getElementById('npSong');
+    var albumEl = document.getElementById('npAlbum');
+
+    /* Set text + local logo placeholder immediately — no blank state */
+    songEl.textContent  = pick.title;
+    albumEl.textContent = pick.album;
+    artEl.src = 'images/logo.png';
+    artEl.alt = pick.title + ' — Linkin Park';
+
+    /* Fetch real album art from iTunes Search API (JSONP via script tag — no CORS) */
+    var cbName = '_itcb' + Date.now();
+    window[cbName] = function(data){
+      delete window[cbName];
+      if(data && data.results && data.results.length){
+        var url = data.results[0].artworkUrl100;
+        if(url){
+          /* bump to 600x600 for crisp display */
+          var hires = url.replace('100x100bb', '600x600bb');
+          var tmp = new Image();
+          tmp.onload = function(){ artEl.src = hires; };
+          tmp.onerror = function(){ /* keep logo placeholder */ };
+          tmp.src = hires;
+        }
+      }
+    };
+
+    var s    = document.createElement('script');
+    s.src    = 'https://itunes.apple.com/search?term='
+               + encodeURIComponent(pick.iTunesQ)
+               + '&entity=song&limit=1&callback=' + cbName;
+    s.async  = true;
+    s.onerror = function(){
+      artEl.src = 'images/logo.png';
+      artEl.alt = 'Linkin Park';
+    };
+    document.head.appendChild(s);
+
+    /* YouTube IFrame API — autoplay */
+    window.onYouTubeIframeAPIReady = function(){
+      new YT.Player('ytPlayer', {
+        height:'1', width:'1',
+        videoId: pick.ytId,
+        playerVars:{
+          autoplay:       1,
+          controls:       0,
+          disablekb:      1,
+          fs:             0,
+          modestbranding: 1,
+          rel:            0,
+          playsinline:    1,
+          origin: window.location.origin || 'https://linkinparkbengaluru.vercel.app'
+        },
+        events:{
+          onStateChange: function(e){
+            if(e.data === YT.PlayerState.PLAYING) card.classList.add('active');
+            else card.classList.remove('active');
+          }
+        }
+      });
+    };
+
+    var ytTag   = document.createElement('script');
+    ytTag.src   = 'https://www.youtube.com/iframe_api';
+    ytTag.async = true;
+    document.head.appendChild(ytTag);
+
+  })();
 </script>
 
 </body>
