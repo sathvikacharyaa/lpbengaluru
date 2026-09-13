@@ -635,6 +635,58 @@ nav{
 }
 .gal-more-btn svg{ width:14px; height:14px; fill:currentColor; flex-shrink:0; }
 
+/* ============ BACKSTORY ============ */
+.backstory{
+  padding:130px 0;
+  position:relative;
+}
+.backstory-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  border-top:1px solid var(--line);
+}
+.bs-block{
+  padding:40px 40px 40px 0;
+  border-bottom:1px solid var(--line);
+}
+.bs-block:nth-child(even){
+  padding:40px 0 40px 40px;
+  border-left:1px solid var(--line);
+}
+.bs-block h3{
+  font-family:'Helvetica Neue','Arial',sans-serif;
+  font-weight:700;
+  font-size:clamp(1rem,2vw,1.25rem);
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  color:var(--ember);
+  margin-bottom:16px;
+}
+.bs-block p{
+  font-size:1.05rem;
+  line-height:1.85;
+  font-weight:300;
+  color:var(--bone);
+  opacity:0.88;
+  margin-bottom:16px;
+}
+.bs-block p:last-child{ margin-bottom:0; }
+.bs-block p em{
+  font-style:italic;
+  color:var(--bone);
+}
+@media(max-width:720px){
+  .backstory{ padding:80px 0; }
+  .backstory-grid{ grid-template-columns:1fr; }
+  .bs-block,
+  .bs-block:nth-child(even){
+    padding:32px 0;
+    border-left:none;
+    border-bottom:1px solid var(--line);
+  }
+}
+
 /* ============ MEMORIES ============ */
 .memories{padding:130px 0; background:var(--char); border-top:1px solid var(--line);}
 .mem-wall{columns:3 260px; column-gap:20px;}
@@ -1070,6 +1122,139 @@ footer{
   /* footer handled in main mobile block below */
 }
 
+/* ============ NOW PLAYING ============ */
+.np-wrap{
+  margin-top:40px;
+  padding-top:36px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:center;
+}
+.np-card{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  max-width:420px;
+  background:rgba(22,18,16,0.9);
+  border:1px solid rgba(237,229,218,0.1);
+  border-radius:8px;
+  padding:16px 20px;
+  box-shadow:0 4px 32px rgba(0,0,0,0.5);
+  position:relative;
+  transition:border-color 0.5s;
+}
+.np-card.active{ border-color:rgba(255,90,46,0.35); }
+
+/* --- album art --- */
+.np-art-wrap{
+  flex-shrink:0;
+  width:80px; height:80px;
+  position:relative;
+  border-radius:6px;
+  background:var(--char-2);
+  border:1px solid rgba(237,229,218,0.08);
+  overflow:hidden;
+}
+/* LP letter placeholder — shown via ::before until real art loads */
+.np-art-wrap::before{
+  content:"LP";
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Anton','Impact',sans-serif;
+  font-size:1.6rem; color:var(--ember);
+  letter-spacing:0.05em;
+  z-index:0;
+}
+.np-art{
+  width:80px; height:80px;
+  border-radius:6px;
+  object-fit:cover;
+  display:block;
+  position:relative; z-index:1;
+  box-shadow:0 4px 24px rgba(0,0,0,0.6);
+  transition:border-radius 0.5s ease, box-shadow 0.5s ease;
+  /* hide broken-image icon when src is empty */
+  color:transparent;
+}
+/* spinning ring — visible when active */
+.np-ring{
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+  border:2px solid transparent;
+  border-top-color:var(--ember);
+  border-right-color:rgba(255,90,46,0.25);
+  animation:npSpin 2.4s linear infinite;
+  opacity:0;
+  transition:opacity 0.5s;
+  z-index:0;
+}
+.np-card.active .np-ring{ opacity:1; }
+.np-card.active .np-art{
+  border-radius:50%;
+  box-shadow:0 0 0 3px rgba(255,90,46,0.2), 0 4px 24px rgba(0,0,0,0.6);
+}
+@keyframes npSpin{ to{ transform:rotate(360deg); } }
+
+/* --- text --- */
+.np-text{
+  flex:1; min-width:0;
+  display:flex; flex-direction:column; gap:3px;
+}
+.np-status{
+  display:flex; align-items:center; gap:8px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.6rem; letter-spacing:0.24em; text-transform:uppercase;
+  color:var(--ember); margin-bottom:4px;
+}
+/* animated sound bars */
+.np-bars{
+  display:inline-flex; align-items:flex-end; gap:2px;
+  height:12px;
+}
+.np-bars span{
+  display:block;
+  width:3px;
+  background:var(--ember);
+  border-radius:1px;
+  animation:npBar 0.9s ease-in-out infinite alternate;
+}
+.np-bars span:nth-child(1){ height:40%;  animation-delay:0s;    }
+.np-bars span:nth-child(2){ height:100%; animation-delay:0.2s;  }
+.np-bars span:nth-child(3){ height:65%;  animation-delay:0.1s;  }
+.np-bars span:nth-child(4){ height:80%;  animation-delay:0.35s; }
+@keyframes npBar{
+  from{ transform:scaleY(0.3); }
+  to{   transform:scaleY(1);   }
+}
+.np-song{
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:1.25rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.03em;
+  color:var(--bone); line-height:1.15;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.np-artist{
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--smoke);
+}
+.np-album{
+  font-family:'JetBrains Mono', monospace;
+  font-size:0.6rem; letter-spacing:0.08em;
+  color:rgba(143,131,120,0.6);
+  margin-top:2px;
+}
+
+/* mobile */
+@media(max-width:480px){
+  .np-card{ gap:14px; padding:14px 16px; }
+  .np-art-wrap{ width:56px; height:56px; }
+  .np-art{ width:56px; height:56px; }
+  .np-art-wrap::before{ font-size:1.1rem; }
+  .np-song{ font-size:0.95rem; }
+}
+
 /* reveal animation */
 .reveal{opacity:0; transform:translateY(28px); transition:opacity 0.9s ease, transform 0.9s ease;}
 .reveal.in{opacity:1; transform:translateY(0);}
@@ -1323,7 +1508,7 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
       <li class="set-item interlude reveal"><span class="set-name">Set Intro C</span><span class="set-tag">(Burn It Down)</span></li>
       <li class="set-item reveal"><span class="set-num">01</span><span class="set-name">Somewhere I Belong</span><span class="set-tag">Meteora</span></li>
       <li class="set-item reveal"><span class="set-num">02</span><span class="set-name">Lying From You</span><span class="set-tag">Meteora</span></li>
-      <li class="set-item reveal"><span class="set-num">03</span><span class="set-name">Up From The Bottom</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal peak"><span class="set-num">03</span><span class="set-name">Up From The Bottom</span><span class="set-tag">From Zero</span></li>
       <li class="set-item reveal"><span class="set-num">04</span><span class="set-name">New Divide</span><span class="set-tag">Single</span></li>
       <li class="set-item reveal peak"><span class="set-num">05</span><span class="set-name">The Emptiness Machine</span><span class="set-tag">From Zero</span></li>
 
@@ -1336,26 +1521,26 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
       <li class="set-item reveal"><span class="set-num">09</span><span class="set-name">Where'd You Go</span><span class="set-tag">Fort Minor · The Rising Tied</span></li>
       <li class="set-item reveal"><span class="set-num">10</span><span class="set-name">Waiting For The End</span><span class="set-tag">A Thousand Suns</span></li>
       <li class="set-item reveal"><span class="set-num">11</span><span class="set-name">Lies Greed Misery</span><span class="set-tag">Living Things</span></li>
-      <li class="set-item reveal"><span class="set-num">12</span><span class="set-name">Two Faced</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal peak"><span class="set-num">12</span><span class="set-name">Two Faced</span><span class="set-tag">From Zero</span></li>
       <li class="set-item reveal"><span class="set-num">13</span><span class="set-name">Joe Hahn Solo</span><span class="set-tag">w/ Colin</span></li>
       <li class="set-item reveal"><span class="set-num">14</span><span class="set-name">When They Come For Me / Remember The Name</span><span class="set-tag">Mike Solo · Mashup</span></li>
       <li class="set-item reveal peak"><span class="set-num">15</span><span class="set-name">IGYEIH</span><span class="set-tag">From Zero</span></li>
-      <li class="set-item reveal peak"><span class="set-num">16</span><span class="set-name">One Step Closer</span><span class="set-tag">Hybrid Theory</span></li>
+      <li class="set-item reveal"><span class="set-num">16</span><span class="set-name">One Step Closer</span><span class="set-tag">Hybrid Theory</span></li>
 
       <!-- ACT III -->
       <li class="set-item act-label"><span class="set-act">ACT III</span></li>
       <li class="set-item interlude reveal"><span class="set-name">Collapse Transition</span><span class="set-tag"></span></li>
       <li class="set-item reveal"><span class="set-num">17</span><span class="set-name">Lost</span><span class="set-tag">Meteora 20</span></li>
-      <li class="set-item reveal"><span class="set-num">18</span><span class="set-name">Good Things Go</span><span class="set-tag">From Zero</span></li>
-      <li class="set-item reveal peak"><span class="set-num">19</span><span class="set-name">What I've Done</span><span class="set-tag">Minutes to Midnight</span></li>
+      <li class="set-item reveal peak"><span class="set-num">18</span><span class="set-name">Good Things Go</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal"><span class="set-num">19</span><span class="set-name">What I've Done</span><span class="set-tag">Minutes to Midnight</span></li>
 
       <!-- ACT IV -->
       <li class="set-item act-label"><span class="set-act">ACT IV</span></li>
       <li class="set-item interlude reveal"><span class="set-name">Kintsugi Transition</span><span class="set-tag"></span></li>
-      <li class="set-item reveal"><span class="set-num">20</span><span class="set-name">Overflow</span><span class="set-tag">From Zero</span></li>
-      <li class="set-item reveal peak"><span class="set-num">21</span><span class="set-name">Numb</span><span class="set-tag">Meteora</span></li>
-      <li class="set-item reveal"><span class="set-num">22</span><span class="set-name">Over Each Other</span><span class="set-tag">From Zero</span></li>
-      <li class="set-item reveal peak"><span class="set-num">23</span><span class="set-name">In The End</span><span class="set-tag">Hybrid Theory · Stranger Things Intro</span></li>
+      <li class="set-item reveal peak"><span class="set-num">20</span><span class="set-name">Overflow</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal"><span class="set-num">21</span><span class="set-name">Numb</span><span class="set-tag">Meteora</span></li>
+      <li class="set-item reveal peak"><span class="set-num">22</span><span class="set-name">Over Each Other</span><span class="set-tag">From Zero</span></li>
+      <li class="set-item reveal"><span class="set-num">23</span><span class="set-name">In The End</span><span class="set-tag">Hybrid Theory · Stranger Things Intro</span></li>
       <li class="set-item reveal"><span class="set-num">24</span><span class="set-name">Faint</span><span class="set-tag">Meteora</span></li>
 
       <!-- ACT V / ENCORE -->
@@ -1363,7 +1548,7 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
       <li class="set-item interlude reveal"><span class="set-name">ENCORE Intro C</span><span class="set-tag">(Burn It Down)</span></li>
       <li class="set-item reveal"><span class="set-num">25</span><span class="set-name">Papercut</span><span class="set-tag">Hybrid Theory</span></li>
       <li class="set-item reveal peak"><span class="set-num">26</span><span class="set-name">Heavy Is The Crown</span><span class="set-tag">From Zero</span></li>
-      <li class="set-item reveal peak"><span class="set-num">27</span><span class="set-name">Bleed It Out</span><span class="set-tag">Minutes to Midnight</span></li>
+      <li class="set-item reveal"><span class="set-num">27</span><span class="set-name">Bleed It Out</span><span class="set-tag">Minutes to Midnight</span></li>
 
     </ul>
 
@@ -1459,6 +1644,40 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
         <svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
         View all moments
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BACKSTORY ============ -->
+<section class="backstory" id="backstory">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">How We Got Here</span>
+      <h2>FROM ZERO Linkin Park Reborn</h2>
+    </div>
+    <div class="backstory-grid">
+
+      <div class="bs-block reveal">
+        <h3>The Countdown That Changed Everything</h3>
+        <p>It all started with a countdown on August 24. None of us expected it. When it ended, the news hit Linkin Park was coming back with a new lead singer. We didn't know who it was yet, but hope returned. For years, I had wished to see them live. Now, that wish felt possible again.</p>
+      </div>
+
+      <div class="bs-block reveal">
+        <h3>A New Chapter Begins</h3>
+        <p>On September 5, years after Chester Bennington's death, the band played together again for the first time. They introduced Emily Armstrong as their new singer and shared a new song, "The Emptiness Machine." It was emotional and exciting the original members were together, starting a new chapter. Rob Bourdon had left the band, Colin Brittain took over on drums. Alex Feder joined as the touring guitarist in place of Brad Delson. Soon after, Linkin Park launched their new album, <em>From Zero</em>, and announced a world tour.</p>
+      </div>
+
+      <div class="bs-block reveal">
+        <h3>The India Surprise</h3>
+        <p>I always hoped however unlikely that Linkin Park might one day come to India. Then rumors began, maybe Lollapalooza. Everyone waited, barely daring to believe. Finally, on August 29, 2025, the headline dropped Linkin Park would play at Lollapalooza Mumbai. No one could believe it. For Indian fans who had waited 20+ years, this was massive. We finally had our chance to see them live.</p>
+        <p>What came next was even bigger. The Mumbai show was already a surprise, since it wasn't on the original tour list and it was just one show. Then another announcement a second show in Bengaluru at Brigade Innovation Gardens. I knew immediately I would not miss this. Two shows in India, so soon, felt like a dream. For a band to tour a country even once is huge, for us to get two shows felt historic.</p>
+      </div>
+
+      <div class="bs-block reveal">
+        <h3>The Dream Comes True</h3>
+        <p>For years, we never thought they would tour India. Now, not only were they coming, they were giving us two nights. The countdown that began on August 24 led to a moment we will never forget. Thank you, Linkin Park, for the music, the return, and for believing in us.</p>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1566,11 +1785,39 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
             <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
             @slicestack3d
           </a>
-          <a class="magnet-credit" href="https://makerworld.com/en/@crazymaverick" target="_blank" rel="noopener noreferrer">
+          <a class="magnet-credit" href="https://makerworld.com/en/@slicestack3d" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
-            MakerWorld · @crazymaverick
+            MakerWorld · @slicestack3d
           </a>
           <a class="magnet-credit" href="https://makerworld.com/en/models/3041102-linkin-park-from-zero-logo-fridge-magnet#profileId-3419685" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
+            Download STL File
+          </a>
+        </div>
+      </div>
+
+      <!-- Phone Case -->
+      <div class="keepsake-item reveal">
+        <div class="keepsake-circle">
+          <div class="keepsake-media" style="cursor:default;">
+            <video autoplay loop muted playsinline
+              src="images/case.mp4"
+              aria-label="Linkin Park 3D printed phone case"
+              style="width:100%;height:100%;object-fit:cover;display:block;">
+            </video>
+          </div>
+        </div>
+        <div class="keepsake-caption">
+          <p>A <b>Linkin Park 3D printed case</b> made for all the fans — customisable for your phone. <b>Made for CMF Phone 1.</b> Print your own and carry the night with you.</p>
+          <a class="magnet-credit" href="https://www.instagram.com/slicestack3d/" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            @slicestack3d
+          </a>
+          <a class="magnet-credit" href="https://makerworld.com/en/@slicestack3d" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+            MakerWorld · @slicestack3d
+          </a>
+          <a class="magnet-credit" href="https://makerworld.com/en/models/3257521-cmf-phone-1-case-with-flush-linkin-park-logo#profileId-3692557" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/></svg>
             Download STL File
           </a>
@@ -1720,7 +1967,7 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
       <ul class="foot-credits-list">
         <li>
           Thanks to <a href="https://youtube.com/@skynorcreation?si=NJW8bep1Gs8nydPr" target="_blank" rel="noopener noreferrer">Sarang · @skynorcreation</a>,
-          Manas Shetty for sharing their moments from the show and making it feel so heartfelt and memorable.
+          Manas Shetty, Sarwin for sharing their moments from the show and making it feel so heartfelt and memorable.
         </li>
         
       </ul>
@@ -1767,6 +2014,26 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
         </div>
       </div>
 
+    </div><!-- end foot-cols -->
+
+    <!-- NOW PLAYING — below quick links -->
+    <div class="np-wrap">
+      <div class="np-card" id="npCard">
+        <div class="np-art-wrap">
+          <img class="np-art" id="npArt" src="" alt="">
+          <div class="np-ring"></div>
+        </div>
+        <div class="np-text">
+          <span class="np-status">
+            <span class="np-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+            Now Playing
+          </span>
+          <p class="np-song" id="npSong">—</p>
+          <p class="np-artist">Linkin Park</p>
+          <p class="np-album" id="npAlbum"></p>
+        </div>
+        <div id="ytPlayer" style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;"></div>
+      </div>
     </div>
 
     <div class="foot-bottom" style="margin-top:56px;">
@@ -1850,6 +2117,119 @@ Then the countdown began. Screams filled the night as the intro to "Burn It Down
   wallLightbox.addEventListener('click', function(e){
     if(e.target === wallLightbox) closeWallLightbox();
   });
+
+  /* ============ NOW PLAYING ============
+     Random LP song each load. Album art fetched live from iTunes Search API
+     — no hotlink blocks, always the real cover art.
+  ================================================ */
+  (function(){
+
+    var SONGS = [
+      /* Hybrid Theory */
+      { title:'Papercut',               album:'Hybrid Theory',       ytId:'vjVkXlxsO8Q', iTunesQ:'Papercut Linkin Park Hybrid Theory' },
+      { title:'One Step Closer',        album:'Hybrid Theory',       ytId:'4qlCC1GOwFw', iTunesQ:'One Step Closer Linkin Park' },
+      { title:'Crawling',               album:'Hybrid Theory',       ytId:'Gd9OhYroLN0', iTunesQ:'Crawling Linkin Park' },
+      { title:'In The End',             album:'Hybrid Theory',       ytId:'eVTXPUF4Oz4', iTunesQ:'In The End Linkin Park' },
+      /* Meteora */
+      { title:'Somewhere I Belong',     album:'Meteora',             ytId:'zsCD5XCu6CM', iTunesQ:'Somewhere I Belong Linkin Park Meteora' },
+      { title:'Faint',                  album:'Meteora',             ytId:'LYU-8IFcDPw', iTunesQ:'Faint Linkin Park Meteora' },
+      { title:'Numb',                   album:'Meteora',             ytId:'kXYiU_JCYtU', iTunesQ:'Numb Linkin Park Meteora' },
+      { title:'Breaking The Habit',     album:'Meteora',             ytId:'v2H4l9RpkwM', iTunesQ:'Breaking The Habit Linkin Park' },
+      { title:'Lying From You',         album:'Meteora',             ytId:'0xyxtzD54rM', iTunesQ:'Lying From You Linkin Park' },
+      /* Minutes to Midnight */
+      { title:"What I've Done",         album:'Minutes to Midnight', ytId:'8sgycukafqQ', iTunesQ:"What I've Done Linkin Park" },
+      { title:'Bleed It Out',           album:'Minutes to Midnight', ytId:'RbBsJkJGSHo', iTunesQ:'Bleed It Out Linkin Park' },
+      { title:'Given Up',               album:'Minutes to Midnight', ytId:'0aMObhOPpFI', iTunesQ:'Given Up Linkin Park' },
+      { title:'Shadow Of The Day',      album:'Minutes to Midnight', ytId:'j1lIMRCM51k', iTunesQ:'Shadow Of The Day Linkin Park' },
+      { title:'Leave Out All The Rest', album:'Minutes to Midnight', ytId:'YcAufuCskSY', iTunesQ:'Leave Out All The Rest Linkin Park' },
+      /* A Thousand Suns */
+      { title:'The Catalyst',           album:'A Thousand Suns',     ytId:'jSPpbOGnFgk', iTunesQ:'The Catalyst Linkin Park' },
+      { title:'Waiting For The End',    album:'A Thousand Suns',     ytId:'wZBm3x90GJY', iTunesQ:'Waiting For The End Linkin Park' },
+      { title:'Iridescent',             album:'A Thousand Suns',     ytId:'PrOFWDPE1rY', iTunesQ:'Iridescent Linkin Park' },
+      /* Living Things */
+      { title:'Burn It Down',           album:'Living Things',       ytId:'9XaS93WMRQQ', iTunesQ:'Burn It Down Linkin Park' },
+      { title:'Castle Of Glass',        album:'Living Things',       ytId:'PEKkdIT8JPM', iTunesQ:'Castle Of Glass Linkin Park' },
+      { title:'Roads Untraveled',       album:'Living Things',       ytId:'uG4cftXQbBU', iTunesQ:'Roads Untraveled Linkin Park' },
+      /* One More Light */
+      { title:'Heavy',                  album:'One More Light',      ytId:'MRbLzwF8PaE', iTunesQ:'Heavy Linkin Park' },
+      { title:'Battle Symphony',        album:'One More Light',      ytId:'6Lio6vDGHRk', iTunesQ:'Battle Symphony Linkin Park' },
+      /* From Zero */
+      { title:'The Emptiness Machine',  album:'From Zero',           ytId:'W-bHiPAGxdQ', iTunesQ:'The Emptiness Machine Linkin Park' },
+      { title:'Lost',                   album:'From Zero',           ytId:'fPMPzV6HOYQ', iTunesQ:'Lost Linkin Park From Zero' },
+      /* Singles */
+      { title:'New Divide',             album:'Transformers OST',    ytId:'KoF53MBUHSs', iTunesQ:'New Divide Linkin Park' },
+    ];
+
+    var pick    = SONGS[Math.floor(Math.random() * SONGS.length)];
+    var card    = document.getElementById('npCard');
+    var artEl   = document.getElementById('npArt');
+    var songEl  = document.getElementById('npSong');
+    var albumEl = document.getElementById('npAlbum');
+
+    /* Set text + local logo placeholder immediately — no blank state */
+    songEl.textContent  = pick.title;
+    albumEl.textContent = pick.album;
+    artEl.src = 'images/logo.png';
+    artEl.alt = pick.title + ' — Linkin Park';
+
+    /* Fetch real album art from iTunes Search API (JSONP via script tag — no CORS) */
+    var cbName = '_itcb' + Date.now();
+    window[cbName] = function(data){
+      delete window[cbName];
+      if(data && data.results && data.results.length){
+        var url = data.results[0].artworkUrl100;
+        if(url){
+          /* bump to 600x600 for crisp display */
+          var hires = url.replace('100x100bb', '600x600bb');
+          var tmp = new Image();
+          tmp.onload = function(){ artEl.src = hires; };
+          tmp.onerror = function(){ /* keep logo placeholder */ };
+          tmp.src = hires;
+        }
+      }
+    };
+
+    var s    = document.createElement('script');
+    s.src    = 'https://itunes.apple.com/search?term='
+               + encodeURIComponent(pick.iTunesQ)
+               + '&entity=song&limit=1&callback=' + cbName;
+    s.async  = true;
+    s.onerror = function(){
+      artEl.src = 'images/logo.png';
+      artEl.alt = 'Linkin Park';
+    };
+    document.head.appendChild(s);
+
+    /* YouTube IFrame API — autoplay */
+    window.onYouTubeIframeAPIReady = function(){
+      new YT.Player('ytPlayer', {
+        height:'1', width:'1',
+        videoId: pick.ytId,
+        playerVars:{
+          autoplay:       1,
+          controls:       0,
+          disablekb:      1,
+          fs:             0,
+          modestbranding: 1,
+          rel:            0,
+          playsinline:    1,
+          origin: window.location.origin || 'https://linkinparkbengaluru.vercel.app'
+        },
+        events:{
+          onStateChange: function(e){
+            if(e.data === YT.PlayerState.PLAYING) card.classList.add('active');
+            else card.classList.remove('active');
+          }
+        }
+      });
+    };
+
+    var ytTag   = document.createElement('script');
+    ytTag.src   = 'https://www.youtube.com/iframe_api';
+    ytTag.async = true;
+    document.head.appendChild(ytTag);
+
+  })();
 </script>
 
 </body>
